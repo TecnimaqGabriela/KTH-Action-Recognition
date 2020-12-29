@@ -43,6 +43,8 @@ def evaluate(model, dataloader, flow=False, use_cuda=False):
         if use_cuda:
             labels = labels.cuda()
 
+        labels = labels.long()
+
         loss += nn.CrossEntropyLoss(size_average=False)(outputs, labels).item()
 
         score, predicted = torch.max(outputs, 1)
