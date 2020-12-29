@@ -43,7 +43,7 @@ def evaluate(model, dataloader, flow=False, use_cuda=False):
         if use_cuda:
             labels = labels.cuda()
 
-        loss += nn.CrossEntropyLoss(size_average=False)(outputs, labels).data[0]
+        loss += nn.CrossEntropyLoss(size_average=False)(outputs, labels).item()
 
         score, predicted = torch.max(outputs, 1)
         correct += (labels.data == predicted.data).sum()
@@ -106,6 +106,7 @@ def train(model, num_epochs, train_set, dev_set, lr=1e-3, batch_size=32,
             # Forward, backward, and optimize.
             outputs = get_outputs(model, samples["instance"], flow=flow,
                                   use_cuda=use_cuda)
+            labels = labels.long()
             loss = criterion(outputs, labels)
             loss.backward()
             optimizer.step()
@@ -113,7 +114,7 @@ def train(model, num_epochs, train_set, dev_set, lr=1e-3, batch_size=32,
             if (i+1) % log == 0:
                 print("epoch %d/%d, iteration %d/%d, loss: %s"
                       % (epoch, start_epoch + num_epochs - 1, i + 1,
-                      len(train_set) // batch_size, loss.data[0]))
+                      len(train_set) // batch_size, loss.item()))
         
         # Get overall loss & accuracy on training set.
         train_loss, train_acc = evaluate(model, train_loader_sequential,
