@@ -47,8 +47,7 @@ if __name__ == "__main__":
     if start_epoch > 1:
         resume = True
     else:
-        resume = False
-
+        resume = Falsepython train_cnn_single_frame.py --batch_size=64 --start_epoch=1 --num_epochs=20 --cuda=1
     # Create directory for storing checkpoints.
     os.makedirs(os.path.join(dataset_dir, "cnn_single_frame"), exist_ok=True)
 
@@ -57,4 +56,3 @@ if __name__ == "__main__":
           start_epoch=start_epoch, log=log_interval, 
           checkpoint_path=os.path.join(dataset_dir, "cnn_single_frame"),
           validate=True, resume=resume, use_cuda=cuda)
-
