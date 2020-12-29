@@ -49,7 +49,7 @@ class RawDataset(Dataset):
         labels = []
         for video in videos:
             for frame in video["frames"]:
-                instances.append(frame.reshape((1, 60, 80)))
+                instances.append(np.array(frame).reshape((1, 60, 80)))
                 labels.append(CATEGORY_INDEX[video["category"]])
 
         instances = np.array(instances, dtype=np.float32)
@@ -95,6 +95,7 @@ class BlockFrameDataset(Dataset):
         current_block = []
         for video in videos:
             for i, frame in enumerate(video["frames"]):
+                frame = np.array(frame)
                 current_block.append(frame)
                 if len(current_block) % 15 == 0:
                     current_block = np.array(current_block)
